@@ -1,16 +1,12 @@
-/**
- * Created by robin on 4/21/17.
- */
-const User = require('../schema/userSchema')
-const crypto = require('crypto')
-const base64 = require('base64url')
-const argon2 = require('argon2')
-const sendEmail = require('../tools/emailFunctions').sendEmail
-const Upload = require('../tools/uploadMulter')
-const axios = require('axios')
+const User = require('../schema/userSchema') //Mongoose User Model
+const crypto = require('crypto') //Used to generate token
+const base64 = require('base64url') //Used to generate token
+const argon2 = require('argon2') //Hash algorithm
+const sendEmail = require('../tools/emailFunctions').sendEmail //Stmp protocol using nodemailer
+const Upload = require('../tools/uploadMulter') //Add enctype data + req.file
+const axios = require('axios') //Http request
 
 /* All Regex for input verifications */
-
 const { protectEntry,
         regexName,
         regexUsername,
@@ -48,8 +44,8 @@ module.exports = {
 
     register: (req, res, next) => {
         let {firstname, lastname, username, email, password, confirmPassword, picture} = req.body
-        if (regexName(firstname) && regexName(lastname) && regexUsername(username) && regexPassword(password) && regexEmail(email) && password === confirmPassword) {
-
+        if (regexName(firstname) && regexName(lastname) && regexUsername(username) && regexPassword(password) &&
+            regexEmail(email) && password === confirmPassword) {
             User.findOne({
                     $or: [
                         {username: username},
@@ -105,7 +101,7 @@ module.exports = {
 
     login: (req, res, next) => {
         let {username, password} = req.body
-        if (protectEntry(regexUsername(username)) && protectEntry(regexPassword(password))) {
+        if (regexUsername(username) && regexPassword(password)) {
             User.findOne({username: username}).then(user => {
                 if (user && user.validationWithEmail === true) {
                     argon2.verify(user.password, password).then(match => {
@@ -201,11 +197,11 @@ module.exports = {
         if (regexEmail(email)) {
             User.findOne({mail: email}).then(user => {
                 if (user) {
-                    sendEmail('resetPass', user._id, user.tokenRegisterEmail, email)
-                    return res.render('index', {
+                    res.render('index', {
                         title:'Hypertube',
                         message: "Instruction for reset password are send, check your mails"
                     })
+                    sendEmail('resetPass', user._id, user.tokenRegisterEmail, email)
                 } else {
                     return res.render('index', {
                         title:'Hypertube',
@@ -286,7 +282,7 @@ module.exports = {
             axios.post('https://api.intra.42.fr/oauth/token', {
                 grant_type : 'authorization_code',
                 client_id : 'bfa18ca1d008f4f16d51aa04f4dd4bf84924230c45c0f3987c94094c0f1eaaf1',
-                client_secret : '121cdf8ae98045e53e40e41f5f6688ed4808ac262e3ec52e04f693d7a293ebda',
+                client_secret : '',
                 code : req.query.code,
                 redirect_uri : 'http://localhost:3000/users/oauth/42'
             }).then(resApi42 => {
@@ -300,6 +296,7 @@ module.exports = {
                 User.findOne({mail: userFromApi.data.email}).then(user => {
                     if(user){
                         return res.render('index', {
+                            title:'Hypertube',
                             message:"This email is already used sorry",
                             type:'entryPoint'
                         })
@@ -307,7 +304,7 @@ module.exports = {
                         let token = base64(crypto.randomBytes(42))
                         let newUser = new User({
                             username: userFromApi.data.login,
-                            password: passHashedWithArgon,
+                            password: 'test',
                             tokenRegisterEmail: token,
                             validationWithEmail: false,
                             mail: userFromApi.data.email,
@@ -333,8 +330,6 @@ module.exports = {
                 })
                 })
             })
-
         }
-
     }
 }

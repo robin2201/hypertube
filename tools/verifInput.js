@@ -1,6 +1,3 @@
-/**
- * Created by rberthie on 4/23/17.
- */
 module.exports = {
 
     protectEntry: data => {
@@ -8,12 +5,12 @@ module.exports = {
     },
 
     regexName: name => {
-        let reg = /^([a-zA-Z\-èêéàôîïùñç]{2,17})$/
+        let reg = /^([a-zA-Z\-èêéàôîïùñç]{2,20})$/
         return reg.test(name);
     },
 
     regexUsername: username => {
-        let reg = /^([a-zA-Z\-0-9_]{4,17})$/
+        let reg = /^([a-zA-Z\-0-9_]{4,20})$/
         return reg.test(username)
     },
 

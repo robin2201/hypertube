@@ -1,10 +1,13 @@
 /**
- * Created by rberthie on 4/23/17.
+ *
+ * All this module are used in the Index Routew
+ * Only render views
+ * Logout function
+ *
  */
 
-
-
 module.exports = {
+
     login: (req, res) => {
         res.render('index', {
             title: 'Hypertube',
