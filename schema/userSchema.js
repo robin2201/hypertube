@@ -12,9 +12,9 @@ let userSchema = mongoose.Schema({
     mail : String,
     firstname : String,
     lastname : String,
-    avatar : String,
-});
+    picture : String,
+})
 
 let User = mongoose.model('User', userSchema)
 
-module.exports = User;
+module.exports = User

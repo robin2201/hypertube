@@ -9,16 +9,23 @@ const sendEmail = require('../tools/emailFunctions').sendEmail
 const Upload = require('../tools/uploadMulter')
 const axios = require('axios')
 
+/* All Regex for input verifications */
+
 const { protectEntry,
         regexName,
         regexUsername,
         regexPassword,
         regexEmail} = require('../tools/verifInput')
+/*End Regex*/
 
+
+/*Opt for Argon2 for optimisation*/
 const optionsArgon2 = {
     timeCost: 4, memoryCost: 13, parallelism: 2, type: argon2.argon2d
 }
+/*End Argon2 opt*/
 
+/*Document projection Out for mongoose queries*/
 const projectionWithNewDocument = {
     projection: {
         password: 0,
@@ -28,12 +35,20 @@ const projectionWithNewDocument = {
     returnOriginal: false
 
 }
+/*End projection */
+
+/**
+ *
+ *  All this modules are using in the route users
+ *  All function to create and modify your account
+ *
+ **/
 
 module.exports = {
 
     register: (req, res, next) => {
         let {firstname, lastname, username, email, password, confirmPassword, picture} = req.body
-        if (protectEntry(regexName(firstname)) && protectEntry(regexName(lastname)) && protectEntry(regexUsername(username)) && protectEntry(regexPassword(password)) && protectEntry(regexEmail(email)) && password === confirmPassword) {
+        if (regexName(firstname) && regexName(lastname) && regexUsername(username) && regexPassword(password) && regexEmail(email) && password === confirmPassword) {
 
             User.findOne({
                     $or: [
@@ -59,7 +74,7 @@ module.exports = {
                                     mail: protectEntry(email),
                                     firstname: protectEntry(firstname),
                                     lastname: protectEntry(lastname),
-                                    avatar: picture ? picture : '',
+                                    picture: picture ? picture : '',
                                 })
                                 newUser.save().then(userSaved => {
                                     req.session.user = userSaved
@@ -247,7 +262,7 @@ module.exports = {
                         if (e) next(e)
                     })
                 }else{
-                    res.render('index', {
+                    return res.render('index', {
                         title:'Hypertube',
                         message:'An error ocured please retry',
                         type:'entryPoint'
@@ -257,7 +272,7 @@ module.exports = {
                 if (e) next(e)
             })
         } else {
-            res.render('index', {
+            return res.render('index', {
                 title:'Hypertube',
                 message: "Error invalid input or pass are not same",
                 type: 'entryPoint'
@@ -266,7 +281,6 @@ module.exports = {
     },
 
     registerWith42: (req, res, next) => {
-        console.log('Nice')
         console.log(req.query)
         if(req.query.code !== ''){
             axios.post('https://api.intra.42.fr/oauth/token', {
@@ -299,7 +313,7 @@ module.exports = {
                             mail: userFromApi.data.email,
                             firstname: userFromApi.data.first_name,
                             lastname: userFromApi.data.last_name,
-                            avatar: userFromApi.data.image_url,
+                            picture: userFromApi.data.image_url,
                         })
                         newUser.save().then(userSaved => {
                             console.log(userSaved)
