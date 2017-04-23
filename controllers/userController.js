@@ -186,10 +186,12 @@ module.exports = {
                 if (user) {
                     sendEmail('resetPass', user._id, user.tokenRegisterEmail, email)
                     return res.render('index', {
+                        title:'Hypertube',
                         message: "Instruction for reset password are send, check your mails"
                     })
                 } else {
                     return res.render('index', {
+                        title:'Hypertube',
                         message: "Sorry this email is not found",
                         type: 'entryPoint'
                     })
@@ -199,6 +201,7 @@ module.exports = {
             })
         } else {
             res.render('index', {
+                title:'Hypertube',
                 message: "Invalid Input mail please retry",
                 type: "entryPoint"
             })
