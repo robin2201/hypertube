@@ -5,7 +5,8 @@ const { login,
         editInfo,
         activationAccount,
         sendResetInstruction,
-        newPassword } = require('../controllers/userController')
+        newPassword,
+        registerWith42} = require('../controllers/userController')
 
 
 
@@ -20,6 +21,7 @@ router.post('/sendResetInstruction', sendResetInstruction)
 
 /* GET users listing. */
 router.get('/activation/:id/:token', activationAccount)
+router.get('/oauth/42', registerWith42)
 
 
 

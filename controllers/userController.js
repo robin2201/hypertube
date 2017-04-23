@@ -7,6 +7,8 @@ const base64 = require('base64url')
 const argon2 = require('argon2')
 const sendEmail = require('../tools/emailFunctions').sendEmail
 const Upload = require('../tools/uploadMulter')
+const axios = require('axios')
+
 const { protectEntry,
         regexName,
         regexUsername,
@@ -261,5 +263,64 @@ module.exports = {
                 type: 'entryPoint'
             })
         }
+    },
+
+    registerWith42: (req, res, next) => {
+        console.log('Nice')
+        console.log(req.query)
+        if(req.query.code !== ''){
+            axios.post('https://api.intra.42.fr/oauth/token', {
+                grant_type : 'authorization_code',
+                client_id : 'bfa18ca1d008f4f16d51aa04f4dd4bf84924230c45c0f3987c94094c0f1eaaf1',
+                client_secret : '121cdf8ae98045e53e40e41f5f6688ed4808ac262e3ec52e04f693d7a293ebda',
+                code : req.query.code,
+                redirect_uri : 'http://localhost:3000/users/oauth/42'
+            }).then(resApi42 => {
+                console.log(resApi42)
+                let tokenType = resApi42.data.token_type
+                let accessToken = resApi42.data.access_token
+                axios.get('https://api.intra.42.fr/v2/me', {
+                    headers : { 'Authorization' : tokenType + ' ' + accessToken }
+            }).then(userFromApi => {
+                console.log(userFromApi)
+                User.findOne({mail: userFromApi.data.email}).then(user => {
+                    if(user){
+                        return res.render('index', {
+                            message:"This email is already used sorry",
+                            type:'entryPoint'
+                        })
+                    }else{
+                        let token = base64(crypto.randomBytes(42))
+                        let newUser = new User({
+                            username: userFromApi.data.login,
+                            password: passHashedWithArgon,
+                            tokenRegisterEmail: token,
+                            validationWithEmail: false,
+                            mail: userFromApi.data.email,
+                            firstname: userFromApi.data.first_name,
+                            lastname: userFromApi.data.last_name,
+                            avatar: userFromApi.data.image_url,
+                        })
+                        newUser.save().then(userSaved => {
+                            console.log(userSaved)
+                            req.session.user = userSaved
+                            sendEmail('newUser', userSaved._id, userSaved.tokenRegisterEmail, userSaved.mail)
+                            return res.render('index', {
+                                title:'Hypertube',
+                                message: "sucess, now valid your email",
+                                type: 'entryPoint'
+                            })
+                        }).catch(e => {
+                            if(e) next(e)
+                        })
+                    }
+                }).catch(e => {
+                    if (e) next(e)
+                })
+                })
+            })
+
+        }
+
     }
 }

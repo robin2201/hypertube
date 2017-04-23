@@ -44,6 +44,9 @@ mixin register()
                         input.form-control(type="file", multiple, name="image", accept="images/*")
                 button.btn.btn-primary.btn-success(type='submit') Sign up
 
+    .row
+        a(href="https://api.intra.42.fr/oauth/authorize?client_id=bfa18ca1d008f4f16d51aa04f4dd4bf84924230c45c0f3987c94094c0f1eaaf1&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fusers%2Foauth%2F42&response_type=code") Connect with 42
+
 mixin login()
     .row
         +navIndex()
