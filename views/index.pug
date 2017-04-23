@@ -1,5 +1,18 @@
 extends layout
+include partials/mixinsIndex
 
 block content
   h1= title
   p Welcome to #{title}
+
+
+    if message
+        +message(message)
+    if type === 'register'
+        +register()
+    else if type === 'login'
+        +login()
+    else if type === 'forget'
+        +forget(action, IdToken)
+    else if type == 'entryPoint'
+        +index(user ? user : '')

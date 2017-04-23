@@ -1,14 +1,23 @@
 const express = require('express');
-const router = express.Router();
-const indexController = require('../controllers/indexController')
-/* GET home.js page. */
-
-router.get('/', indexController.renderIndex)
-router.get('logout', indexController.logout)
-router.get('/register', indexController.register)
-router.get('/signin', indexController.signin)
-//router.get('/logout', logout)
+const app = express.Router();
+const { index,
+        register,
+        login,
+        logout,
+        forget,
+        resetPass} = require('../controllers/indexController')
 
 
 
-module.exports = router;
+
+
+/* GET Index page. */
+app.get('/', index)
+app.get('/register', register)
+app.get('/login', login)
+app.get('/logout', logout)
+app.get('/forget', forget)
+app.get('/resetPassword/:id/:token', resetPass)
+
+
+module.exports = app;

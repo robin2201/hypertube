@@ -1,33 +1,65 @@
 /**
- * Created by robin on 4/18/17.
+ * Created by rberthie on 4/23/17.
  */
-module.exports = {
 
-    renderIndex: (req, res) => {
+
+
+module.exports = {
+    login: (req, res) => {
         res.render('index', {
-            title: 'Hypertube'
+            title: 'Hypertube',
+            type: "login"
+        })
+    },
+
+    index: (req, res) => {
+        res.render('index', {
+            title: 'Hypertube',
+            type: "entryPoint"
         })
     },
 
     register: (req, res) => {
-
-    },
-
-    signin: (req, res) => {
-
-    },
-
-    oAuth42: (req, res) => {
-
-    },
-
-    oAuthGoogle: (req, res) => {
-
+        res.render('index', {
+            title: 'Hypertube',
+            type: "register"
+        })
     },
 
     logout: (req, res) => {
-        req.session.destroy(err => {
-            if (!err) res.redirect('/')
+        if(req.session){
+            req.session.destroy(err => {
+                if(!err){
+                    res.redirect('/')
+                }
+            })
+        }
+    },
+
+    forget: (req, res) => {
+        res.render('index', {
+            title:'Hypertube',
+            type:'forget',
+            action:"sendInstruction"
+        })
+    },
+
+    resetPass: (req, res) => {
+        let {id, token} = req.params
+        id = id.substr(1)
+        token = token.substr(1)
+
+        res.render('index', {
+            title:'Hypertube',
+            type:'forget',
+            action:"resetPass",
+            IdToken: {
+                id:id,
+                token:token
+            }
+
         })
     }
+
+
 }
