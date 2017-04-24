@@ -1,22 +1,33 @@
 const mongoose = require('../config/mongoose')
 
 let userSchema = mongoose.Schema({
-    username : String,
-    // password : {
-    //     salt: String,
-    //     hashPassword: String,
-    // },
+    username : {
+        type: String,
+        required: true,
+    },
     tokenRegisterEmail: String,
-    password: String,
+    password:{
+        type: String,
+        required: true
+    },
     validationWithEmail: Boolean,
-    mail : String,
-    firstname : String,
-    lastname : String,
-    picture : String,
+    mail: {
+        type: String,
+        required: true
+    },
+    firstname:{
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true,
+    },
+    picture : {
+        type: String,
+    },
 })
 
-let User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
 
 module.exports = User
-
-//TODO Modify this schema to add specification

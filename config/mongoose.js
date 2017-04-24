@@ -1,15 +1,20 @@
-/**
- * Created by robin on 4/21/17.
- */
+/** Constants used to create db connection **/
+const {dbHosts, dbName, Promise } = require('./constants')
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/hypertube')
 
-let db = mongoose.connection
+/** Add own Promise because mongoose Promise is now depreciated **/
+mongoose.Promise = Promise
+mongoose.connect(`mongodb://${dbHosts.join(",")}/${dbName}`, {
+    db: {
+        native_parser: true
+    }
+})
+let _db = mongoose.connection
 
-db.on('error', err => {
-    console.log('DB Connection error : ', err)
+_db.on('error', err => {
+    console.log(`DB Connection error : ${err}`)
 }).once('open', () => {
-    console.log('DB Connection successed')
+    console.log(`DB Connection on ${dbName} successed `)
 })
 
 module.exports = mongoose

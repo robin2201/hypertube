@@ -1,27 +1,46 @@
-const User = require('../schema/userSchema') //Mongoose User Model
-const crypto = require('crypto') //Used to generate token
-const base64 = require('base64url') //Used to generate token
-const argon2 = require('argon2') //Hash algorithm
-const sendEmail = require('../tools/emailFunctions').sendEmail //Stmp protocol using nodemailer
-const Upload = require('../tools/uploadMulter') //Add enctype data + req.file
-const axios = require('axios') //Http request
+/**
+ *
+ *  All this modules are using in the route users
+ *  All function to create and modify your account
+ *
+ **/
 
-/* All Regex for input verifications */
+/** Mongoose User Model **/
+const User = require('../schema/userSchema')
+
+/** Used to generate token **/
+const crypto = require('crypto') //
+const base64 = require('base64url')
+/** End tools token generation **/
+
+/** Hash Algorithm fror passwords **/
+const argon2 = require('argon2')
+
+/** Stmp protocol using nodemailer and Mailtrap.io **/
+const sendEmail = require('../tools/emailFunctions').sendEmail
+
+/** Multer Objet create enctype/data and add .file to req **/
+const Upload = require('../tools/uploadMulter')
+
+/** HTTP simple request **/
+const axios = require('axios')
+
+/** All Regex for input verifications **/
 const { protectEntry,
         regexName,
         regexUsername,
         regexPassword,
         regexEmail} = require('../tools/verifInput')
-/*End Regex*/
+/** End Regex **/
 
 
-/*Opt for Argon2 for optimisation*/
+/** Opt for Argon2 for optimisation use more memory, work on 2 threads **/
 const optionsArgon2 = {
     timeCost: 4, memoryCost: 13, parallelism: 2, type: argon2.argon2d
 }
-/*End Argon2 opt*/
+/** End Argon2 opt **/
 
-/*Document projection Out for mongoose queries*/
+/** Document projection Out for mongoose queries **/
 const projectionWithNewDocument = {
     projection: {
         password: 0,
@@ -31,18 +50,17 @@ const projectionWithNewDocument = {
     returnOriginal: false
 
 }
-/*End projection */
+/** End projection **/
 
-/**
- *
- *  All this modules are using in the route users
- *  All function to create and modify your account
- *
- **/
 
 module.exports = {
 
     register: (req, res, next) => {
+        Upload(req, res, e => {
+            if(e) next(e)
+            else next()
+        })
+        console.log(req.file)
         let {firstname, lastname, username, email, password, confirmPassword, picture} = req.body
         if (regexName(firstname) && regexName(lastname) && regexUsername(username) && regexPassword(password) &&
             regexEmail(email) && password === confirmPassword) {
@@ -57,9 +75,10 @@ module.exports = {
                     else if (user) {
                         return res.render('index', {
                             title:'Hypertube',
-                            message: "Sorry user already exist"})
+                            message: "Sorry user already exist"
+                        })
                     } else {
-                        argon2.generateSalt(42).then(salt => {
+                        argon2.generateSalt(32).then(salt => {
                             argon2.hash(password, salt, optionsArgon2).then(passHashedWithArgon => {
                                 let token = base64(crypto.randomBytes(42))
                                 let newUser = new User({
@@ -67,10 +86,10 @@ module.exports = {
                                     password: passHashedWithArgon,
                                     tokenRegisterEmail: token,
                                     validationWithEmail: false,
-                                    mail: protectEntry(email),
+                                    mail: email,
                                     firstname: protectEntry(firstname),
                                     lastname: protectEntry(lastname),
-                                    picture: picture ? picture : '',
+                                    picture: '',
                                 })
                                 newUser.save().then(userSaved => {
                                     req.session.user = userSaved
@@ -81,6 +100,7 @@ module.exports = {
                                         type: 'entryPoint'
                                     })
                                 }).catch(e => {
+                                    console.log('Error during saving User')
                                     next(e)
                                 })
                             }).catch(e => {
@@ -233,7 +253,7 @@ module.exports = {
                 ]
             }).then(user => {
                 if (user) {
-                    argon2.generateSalt(42).then(salt => {
+                    argon2.generateSalt(32).then(salt => {
                         argon2.hash(password, salt, optionsArgon2).then(passHashedWithArgon => {
                             User.update({
                                     _id: id
@@ -277,12 +297,12 @@ module.exports = {
     },
 
     registerWith42: (req, res, next) => {
-        console.log(req.query)
+        console.log(req.query) // All returned by the a(href) log with 42
         if(req.query.code !== ''){
             axios.post('https://api.intra.42.fr/oauth/token', {
                 grant_type : 'authorization_code',
                 client_id : 'bfa18ca1d008f4f16d51aa04f4dd4bf84924230c45c0f3987c94094c0f1eaaf1',
-                client_secret : '',
+                client_secret : '121cdf8ae98045e53e40e41f5f6688ed4808ac262e3ec52e04f693d7a293ebda',
                 code : req.query.code,
                 redirect_uri : 'http://localhost:3000/users/oauth/42'
             }).then(resApi42 => {

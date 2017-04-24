@@ -7,8 +7,8 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const index = require('./routes/index')
 const users = require('./routes/users')
-const passport = require('passport')
-const LocalStrategy = require('passport-local')
+const compression = require('compression')
+
 
 const sess = session({
     secret: 'keyboard cat',
@@ -28,6 +28,14 @@ app.set('view engine', 'pug')
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+/** Enable compression of res bodies **/
+app.use(compression({
+    threshold: 1400,
+    level: 4,
+    memLevel: 3
+}));
+
 app.use(cookieParser())
 app.use(sess)
 
