@@ -7,6 +7,7 @@ const { login,
         sendResetInstruction,
         newPassword,
         registerWith42 } = require('../controllers/userController')
+//const { home } = require('../controllers/indexController')
 
 
 
@@ -18,11 +19,10 @@ router.post('/newPassword', newPassword)
 router.post('/sendResetInstruction', sendResetInstruction)
 
 
-
 /* GET users listing. */
 router.get('/activation/:id/:token', activationAccount)
 router.get('/oauth/42', registerWith42)
-
+//router.get('/edit', home)
 
 
 module.exports = router;

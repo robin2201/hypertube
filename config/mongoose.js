@@ -1,5 +1,5 @@
 /** Constants used to create db connection **/
-const {dbHosts, dbName, Promise } = require('./constants')
+const { dbHosts, dbName, Promise } = require('./constants')
 const mongoose = require('mongoose')
 
 /** Add own Promise because mongoose Promise is now depreciated **/

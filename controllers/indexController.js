@@ -62,6 +62,16 @@ module.exports = {
             }
 
         })
+    },
+
+    home: (req, res, next) => {
+        if(req.session.user){
+            res.render('index', {
+                user:user,
+                type: 'edit'
+            })
+        }else
+            next({message: "log in before"})
     }
 
 

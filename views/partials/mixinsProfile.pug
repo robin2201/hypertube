@@ -1,0 +1,11 @@
+mixin editProfile(user)
+    .row
+        .col-sm-6
+            h2.center edit My Profile
+            form.form-group(method='POST', action='/users/edit')
+                .row
+                    input#nickname.form-control(type='text', placeholder='Username' name='username')
+                    input#firstname.form-control(type='text', placeholder='Firstname' name='firstname')
+                    input#lastname.form-control(type='text', placeholder='LastName' name='lastname')
+                    input#email.form-control(type='email', placeholder='name@email.com' name='email')
+                    button.btn-primary(type='submit' value="Upload") Edit

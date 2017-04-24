@@ -47,10 +47,10 @@ const projectionWithNewDocument = {
         mail: 0,
         tokenRegisterEmail: 0
     },
-    returnOriginal: false
-
+    new: true
 }
 /** End projection **/
+
 
 
 module.exports = {
@@ -138,7 +138,7 @@ module.exports = {
                             })
                         }
                     }).catch(e => {
-                        next(e, {message: "internal Error, please retry"})
+                        next(e)
                     })
                 } else if (user) {
                     res.render('index', {
@@ -158,9 +158,77 @@ module.exports = {
         }
     },
 
-    editInfo: (req, res, next) => {
+    // async uptdateMe(edit, id){
+    //     console.log('Yesssss')
+    //     try {
+    //         user = await new Promise ( ( resolve, reject ) => {
+    //             User.update( { _id: id }, edit, { returnOriginal: false }, ( error, obj ) => {
+    //                 if( error ) {
+    //                     console.error( JSON.stringify( error ) );
+    //                     return reject( error );
+    //                 }
+    //                 console.log('Bggggg')
+    //                 console.log(obj)
+    //                 resolve( obj );
+    //             });
+    //         })
+    //     } catch( error ) { /* set the world on fire */ }
+    //
+//     try {
+//         let user = await new Promise ( ( resolve, reject ) => {
+//             User.update( { _id: id }, edit, { returnOriginal: false }, ( error, obj ) => {
+//                 if( error ) {
+//                     console.error( JSON.stringify( error ) )
+//                     return reject( error );
+//                 }
+//                 resolve( obj )
+//             })
+//         })
+//         user.then( obj => {
+//         console.log(obj)
+//     })
+// } catch( error ) { next(error) }
 
+// },
+
+    async editInfo (req, res, next) {
+        let { username, firstname, lastname, email } = req.body
+        let id = req.session.user._id
+        let edit = {}
+        if(username && regexUsername(username)){
+            edit.username = protectEntry(username)
+        }
+        if(firstname && regexName(firstname)){
+            edit.firstname = protectEntry(firstname)
+        }
+        if(lastname && regexName(lastname)){
+            edit.firstname = protectEntry(lastname)
+        }
+        if(email && regexEmail(email)){
+            edit.mail = email
+        }
+        if(edit !== '' && (id !== undefined || id !== '')){
+            User.findOneAndUpdate({_id:id}, edit, projectionWithNewDocument).then(user => {
+                if(user){
+                    req.session.user = user
+                    res.render('index', {
+                        user:user,
+                        type:'entryPoint'
+                    })
+                }
+                else{
+                    next({
+                        message:"An error as occured"
+                    })
+                }
+            }).catch(e => {
+                if (e) next(e, {message:'Lol'})
+            })
+        }else
+            next({message:"Mdrrrrr"})
     },
+
+
 
     activationAccount: (req, res, next) => {
         console.log(req.params)

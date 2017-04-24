@@ -1,5 +1,6 @@
 extends layout
 include partials/mixinsIndex
+include partials/mixinsProfile
 
 block content
   h1= title
@@ -16,3 +17,6 @@ block content
         +forget(action, IdToken)
     else if type == 'entryPoint'
         +index(user ? user : '')
+    //else if type === "edit"
+    +editProfile(user)
+
