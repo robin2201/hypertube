@@ -38,8 +38,11 @@ module.exports = {
             if(err) console.log(err)
             else{
                 transporter.sendMail(message, (err, info) => {
-                    console.log('Message %s, sent with response %s!', info.messageId, info.response)
-                    transporter.close()
+                    if(err) console.log(err)
+                    else{
+                        console.log('Message %s, sent with response %s!', info.messageId, info.response)
+                        transporter.close()
+                    }
                 })
             }
         })

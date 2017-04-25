@@ -9,7 +9,7 @@ const { index,
         resetPass,
         home } = require('../controllers/indexController')
 
-
+const {ScrapMovie} = require('../controllers/MovieController')
 
 
 
@@ -21,4 +21,6 @@ app.get('/logout', logout)
 app.get('/forget', forget)
 app.get('/resetPassword/:id/:token', resetPass)
 app.get('/users/edit', home)
+app.get('/tamere', ScrapMovie)
+
 module.exports = app;
