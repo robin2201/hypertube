@@ -5,28 +5,6 @@
  *
  **/
 
-/** Mongoose User Model **/
-const User = require('../schema/userSchema')
-
-/** Used to generate token **/
-const crypto = require('crypto')
-const base64 = require('base64url')
-/** End tools token generation **/
-
-/** Hash Algorithm fror passwords **/
-const argon2 = require('argon2')
-
-/** Stmp protocol using nodemailer and Mailtrap.io **/
-const sendEmail = require('../tools/emailFunctions').sendEmail
-
-/** Multer Objet create enctype/data and add .file to req **/
-const Upload = require('../tools/uploadMulter')
-
-/** HTTP simple request **/
-const axios = require('axios')
-
-const request = require('request')
-
 const UserClass = require('../schema/userClass')
 
 module.exports = {
@@ -56,7 +34,6 @@ module.exports = {
             .catch(e => next(e))
     },
 
-
     editInfo: (req, res, next) => {
         let UserEdit = new UserClass(req.body)
         UserEdit.EditMyInfo(req.session.user._id)
@@ -74,7 +51,6 @@ module.exports = {
             .catch(e => next(e))
     },
 
-
     activationAccount: (req, res, next) => {
         let UserTrue = new UserClass(req.params)
         UserTrue.SetAccountToTrue()
@@ -88,9 +64,7 @@ module.exports = {
                     type: `entryPoint`
                 })
             })
-
             .catch(e => next(e))
-
     },
 
     sendResetInstruction: (req, res, next) => {         //TODO Error when invaid input... Ok when empty
