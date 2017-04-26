@@ -25,7 +25,7 @@ const Upload = require('../tools/uploadMulter')
 /** HTTP simple request **/
 const axios = require('axios')
 
-
+const request = require('request')
 
 const UserClass = require('../schema/userClass')
 
@@ -49,6 +49,8 @@ module.exports = {
         let UserLogin = new UserClass(req.body)
         UserLogin.LogInOrRedirect()
             .then(UserLog => {
+                if (UserLog.status === `ok`)
+                    req.session.user = UserLog.user
                 return res.render(`index`, UserLog)
             })
             .catch(e => next(e))
@@ -59,7 +61,8 @@ module.exports = {
         let UserEdit = new UserClass(req.body)
         UserEdit.EditMyInfo(req.session.user._id)
             .then(UserUpdate => {
-                if (UserUpdate.type === `Nice`)
+                console.log(UserUpdate.user)
+                if (UserUpdate.type === `ok`)
                     req.session.user = UserUpdate.user
                 return res.render('index', {
                     message: UserUpdate.message,
@@ -76,7 +79,7 @@ module.exports = {
         let UserTrue = new UserClass(req.params)
         UserTrue.SetAccountToTrue()
             .then(UserAct => {
-                if (UserAct.type === `Nice`)
+                if (UserAct.type === `ok`)
                     req.session.user = UserAct.user
                 return res.render('index', {
                     user: req.session.user,
@@ -85,6 +88,7 @@ module.exports = {
                     type: `entryPoint`
                 })
             })
+
             .catch(e => next(e))
 
     },
@@ -93,11 +97,7 @@ module.exports = {
         let UserReset = new UserClass(req.body)
         UserReset.SendReset()
             .then(ifSent => {
-                return res.render('index', {
-                    title: `Hypertube`,
-                    type: `endPoint`,
-                    message: ifSent.message
-                })
+                return res.render('index', ifSent)
             })
             .catch(e => next(e))
     },
@@ -112,62 +112,74 @@ module.exports = {
     },
 
     registerWith42: (req, res, next) => {
-        console.log(req.query) // All returned by the a(href) log with 42
-        if (req.query.code !== '') {
-            axios.post('https://api.intra.42.fr/oauth/token', {
-                grant_type: 'authorization_code',
-                client_id: 'bfa18ca1d008f4f16d51aa04f4dd4bf84924230c45c0f3987c94094c0f1eaaf1',
-                client_secret: '121cdf8ae98045e53e40e41f5f6688ed4808ac262e3ec52e04f693d7a293ebda',
-                code: req.query.code,
-                redirect_uri: 'http://localhost:3000/users/oauth/42'
-            }).then(resApi42 => {
-                console.log(resApi42)
-                let tokenType = resApi42.data.token_type
-                let accessToken = resApi42.data.access_token
-                axios.get('https://api.intra.42.fr/v2/me', {
-                    headers: {'Authorization': tokenType + ' ' + accessToken}
-                }).then(userFromApi => {
-                    console.log(userFromApi)
-                    User.findOne({mail: userFromApi.data.email}).then(user => {
-                        if (user) {
-                            return res.render('index', {
-                                title: 'Hypertube',
-                                message: "This email is already used sorry",
-                                type: 'entryPoint'
-                            })
-                        } else {
-                            let token = base64(crypto.randomBytes(42))
-                            let newUser = new User({
-                                username: userFromApi.data.login,
-                                password: 'test',
-                                tokenRegisterEmail: token,
-                                validationWithEmail: false,
-                                mail: userFromApi.data.email,
-                                firstname: userFromApi.data.first_name,
-                                lastname: userFromApi.data.last_name,
-                                picture: userFromApi.data.image_url,
-                            })
-                            newUser.save().then(userSaved => {
-                                console.log(userSaved)
-                                req.session.user = userSaved
-                                sendEmail('newUser', userSaved._id, userSaved.tokenRegisterEmail, userSaved.mail)
-                                return res.render('index', {
-                                    title: 'Hypertube',
-                                    message: "sucess, now valid your email",
-                                    type: 'entryPoint'
-                                })
-                            }).catch(e => {
-                                if (e) next(e)
-                            })
-                        }
-                    }).catch(e => {
-                        if (e) next(e)
-                    })
+        let User42 = new UserClass()
+        try {
+            User42.Oauth42(req)
+                .then(ToValid => {
+                    return res.render('index', ToValid)
                 })
-            })
+        } catch (e) {
+            next(e)
         }
     }
 }
+
+/** Before oauth **/
+//    console.log(req.query) // All returned by the a(href) log with 42
+//    axios.post('https://api.intra.42.fr/oauth/token', {
+//        grant_type: 'authorization_code',
+//        client_id: 'bfa18ca1d008f4f16d51aa04f4dd4bf84924230c45c0f3987c94094c0f1eaaf1',
+//        client_secret: '121cdf8ae98045e53e40e41f5f6688ed4808ac262e3ec52e04f693d7a293ebda',
+//        code: req.query.code,
+//        redirect_uri: 'http://localhost:3000/users/oauth/42'
+//    }).then(resApi42 => {
+//        console.log(resApi42)
+//        let tokenType = resApi42.data.token_type
+//        let accessToken = resApi42.data.access_token
+//        axios.get('https://api.intra.42.fr/v2/me', {
+//            headers: {'Authorization': tokenType + ' ' + accessToken}
+//        }).then(userFromApi => {
+//            console.log(userFromApi)
+//            User.findOne({mail: userFromApi.data.email}).then(user => {
+//                if (user) {
+//                    return res.render('index', {
+//                        title: 'Hypertube',
+//                        message: "This email is already used sorry",
+//                        type: 'entryPoint'
+//                    })
+//                } else {
+//                    let token = base64(crypto.randomBytes(42))
+//                    let newUser = new User({
+//                        username: userFromApi.data.login,
+//                        password: 'test',
+//                        tokenRegisterEmail: token,
+//                        validationWithEmail: false,
+//                        mail: userFromApi.data.email,
+//                        firstname: userFromApi.data.first_name,
+//                        lastname: userFromApi.data.last_name,
+//                        picture: userFromApi.data.image_url,
+//                    })
+//                    newUser.save().then(userSaved => {
+//                        console.log(userSaved)
+//                        req.session.user = userSaved
+//                        sendEmail('newUser', userSaved._id, userSaved.tokenRegisterEmail, userSaved.mail)
+//                        return res.render('index', {
+//                            title: 'Hypertube',
+//                            message: "sucess, now valid your email",
+//                            type: 'entryPoint'
+//                        })
+//                    }).catch(e => {
+//                        if (e) next(e)
+//                    })
+//                }
+//            }).catch(e => {
+//                if (e) next(e)
+//            })
+//        })
+//    })
+// }
+//}
+
 
 /** Register before**/
 
@@ -344,7 +356,7 @@ module.exports = {
 //         type: "entryPoint"
 //     })
 // }
- /** Before pass **/
+/** Before pass **/
 // let {password, confirmPassword, id, token} = req.body
 // token = String(token)
 // if (password === confirmPassword && regexPassword(password)) {
