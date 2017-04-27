@@ -37,7 +37,6 @@ module.exports = {
     },
 
     SingleMovie: (req, res, next) => {
-        console.log(req.params.idMovie.substr(1))
         try {
             const OneMovie = new MovieClass(req.params.idMovie)
             OneMovie.ReturnOneMovie()
@@ -55,7 +54,7 @@ module.exports = {
     },
 
     DownloadAndStartStream: (req, res, next) => {
-        
+
     }
 
 }
