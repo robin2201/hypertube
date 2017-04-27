@@ -14,7 +14,7 @@ const transporter = nodeMailer.createTransport({
 
 module.exports = {
 
-    sendEmail: (type, id, token, email) => {
+    async sendEmail (type, id, token, email)  {
         let link = "http://localhost:3000/users/activation/:"+id+"/:"+token
         let message = {
             from : "Hypertube register <noreply@hypertube-app.42.fr>",
