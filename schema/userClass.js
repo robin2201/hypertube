@@ -1,6 +1,3 @@
-/**
- * Created by robin on 4/25/17.
- */
 const UserSchema = require('../schema/userSchema')
 
 /** Used to generate token **/

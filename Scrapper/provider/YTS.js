@@ -1,6 +1,3 @@
-/**
- * Created by rberthie on 4/24/17.
- */
 const request = require('request')
 const asyncq = require('async-q')
 const {maxWebRequest, webRequestTimeout} = require('../../config/constants')

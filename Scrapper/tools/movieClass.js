@@ -1,6 +1,3 @@
-/**
- * Created by robin on 4/26/17.
- */
 const MovieSchema = require('../models/MovieSchema')
 
 
