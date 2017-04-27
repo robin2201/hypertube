@@ -22,6 +22,7 @@ router.post('/sendResetInstruction', sendResetInstruction)
 /* GET users listing. */
 router.get('/activation/:id/:token', activationAccount)
 router.get('/oauth/42', registerWith42)
+
 //router.get('/edit', home)
 
 

@@ -7,7 +7,9 @@ module.exports = {
         let scrap = new Scrap()
         scrap.scrape()
             .then(x => {
-            console.log(`HErre ${x}`)
+                return res.render('movie', {
+                    movies:x
+                })
         })
     },
 

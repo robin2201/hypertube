@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    if movies
+        each elem in movies
+            p #{elem.imdb_id}
+            p #{elem.titile}
+            p #{elem.synopsis}
+            each genre in elem.genres
+                p #{genre}
+            p #{elem.trailer}

@@ -266,7 +266,7 @@ class User {
                                     username: AxiosGet.data.login,
                                     email: AxiosGet.data.email,
                                     firstname: AxiosGet.data.first_name,        //TODO Finish actually error with Data when they are tested...
-                                    lastname: AxiosGet.data.last_name,
+                                    lastname: AxiosGet.data.last_name,          //!FIXME Add Picture to db AiosGet.data.picture try console.log(AiosGet.data)
                                     password: `Robin22Bert`,
                                     confirmPassword:`Robin22Bert`
                                 }
