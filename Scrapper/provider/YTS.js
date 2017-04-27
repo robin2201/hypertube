@@ -7,6 +7,10 @@ const {maxWebRequest, webRequestTimeout} = require('../../config/constants')
 const MovieClass = require('../tools/movieClass')
 
 class YTS {
+    /**
+     *
+     * @param name ===> Provider
+     */
     constructor(name) {
 
         this.name = name
@@ -20,6 +24,11 @@ class YTS {
         })
     }
 
+    /**
+     *
+     * @param retry
+     * @returns {Promise} ===> total pages
+     */
     getTotalPages(retry = true) {
         const url = "list_movies.json";
         return new Promise((resolve, reject) => {
@@ -39,6 +48,12 @@ class YTS {
         })
     }
 
+    /**
+     *
+     * @param page
+     * @param retry
+     * @returns {Promise}
+     */
     getOnePage(page, retry = true) {
         const url = `?limit=50&page=${page + 1}`
         return new Promise((resolve, reject) => {
@@ -57,7 +72,10 @@ class YTS {
         })
     }
 
-    /** See on bottom in com an element example **/
+    /**
+     * @param data ===========> See on bottom in com an element example
+     * @returns {*}
+     */
     formatPage(data) {
         return asyncq.each(data, movie => {
             if (movie && movie.torrents && movie.imdb_code && movie.language.match(/english/i)) {
@@ -96,6 +114,10 @@ class YTS {
         })
     }
 
+    /**
+     *
+     * @returns {Promise.<*>}
+     */
     async getMovies() {
         try {
             const totalPages = await this.getTotalPages()
@@ -115,6 +137,10 @@ class YTS {
         }
     }
 
+    /**
+     *
+     * @returns {Promise.<*>}
+     */
     async parse() {
         try {
             console.log(`${this.name}: Starting scraping...`)

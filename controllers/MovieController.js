@@ -2,7 +2,13 @@ const Scrap = require('../Scrapper/Scrapper')
 const MovieClass = require('../Scrapper/tools/movieClass')
 
 module.exports = {
-
+    /**
+     *
+     * @param req
+     * @param res
+     * @param next
+     * @constructor
+     */
     ScrapMovie: (req, res, next) => {
         try {
             let scrap = new Scrap()
@@ -15,7 +21,13 @@ module.exports = {
         }
 
     },
-
+    /**
+     *
+     * @param req
+     * @param res
+     * @param next
+     * @constructor
+     */
     //TODO add pagination in req.params with scip and limit keyWords in mongoose find method
     GalleryMovie: (req, res, next) => {
         try {
@@ -33,7 +45,13 @@ module.exports = {
             next(e)
         }
     },
-
+    /**
+     *
+     * @param req
+     * @param res
+     * @param next
+     * @constructor
+     */
     SingleMovie: (req, res, next) => {
         try {
             const OneMovie = new MovieClass(req.params.idMovie)

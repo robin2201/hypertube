@@ -5,12 +5,20 @@ const MovieSchema = require('../models/MovieSchema')
 
 
 class Movie {
-
+    /**
+     *
+     * @param movie
+     */
     constructor(movie){
             this.movie = movie
 
     }
 
+    /**
+     *
+     * @returns {Promise.<*>}
+     * @constructor
+     */
     async AddMovieOrReturnIfExist() {
         try {
             const ifExist = await MovieSchema.findOne({_id: this.movie._id}).exec()
@@ -24,6 +32,11 @@ class Movie {
         }
     }
 
+    /**
+     *
+     * @returns {Promise.<*>}
+     * @constructor
+     */
     //TODO add req.params.page to calculate scip and limit scip = (nb elem) * page
     async ReturnAllMovies(){
         try {
@@ -33,12 +46,14 @@ class Movie {
         }
     }
 
+    /**
+     *
+     * @returns {Promise.<*>}
+     * @constructor
+     */
     async ReturnOneMovie(){
-        console.log(`This movie ====>   ${this.movie}`)
         try{
-            let tam = await MovieSchema.findOne({_id: this.movie}).exec()
-            console.log(tam)
-            return tam
+            return await MovieSchema.findOne({_id: this.movie}).exec()
         } catch (e) { return e}
     }
 }

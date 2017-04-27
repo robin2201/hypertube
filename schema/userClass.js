@@ -39,11 +39,19 @@ const {projectionWithNewDocument, AxiosOAuth42} = require('../config/constants')
 
 
 class User {
-
+    /**
+     *
+     * @param data
+     */
     constructor(data) {
         this.data = data
     }
 
+    /**
+     *
+     * @param int
+     * @returns Boolean
+     */
     controlInput(int) {
         if (int === 1) {
             return (regexName(this.data.firstname)
@@ -64,6 +72,11 @@ class User {
 
     }
 
+    /**
+     *
+     * @returns {Promise.<*>} ====> { user }
+     * @constructor
+     */
     async FindUserOrCreate() {
         if (this.controlInput(1) === true) {
             let user = await UserSchema.findOne({
@@ -100,6 +113,11 @@ class User {
         }
     }
 
+    /**
+     *
+     * @returns {Promise.<*>} ====> { user }
+     * @constructor
+     */
     async LogInOrRedirect() {
         if (this.controlInput(2)) {
             let user = await UserSchema.findOne({
@@ -131,6 +149,10 @@ class User {
         } else return {type: `login`, message: `Entry not conform`, title: `Hpertube`}
     }
 
+    /**
+     *
+     * @returns {Promise.<*>}
+     */
     async newPassword() {
         if (this.data.password === this.data.confirmPassword && regexPassword(password)) {
             try {
@@ -167,6 +189,12 @@ class User {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @returns {Promise.<*>}
+     * @constructor
+     */
     async EditMyInfo(id) {
         if (this.controlInput(3)) {
             let query = {}
@@ -192,6 +220,11 @@ class User {
         }
     }
 
+    /**
+     *
+     * @returns {Promise.<*>}
+     * @constructor
+     */
     async SetAccountToTrue() {
         if (this.data.id !== '' && this.data.token !== '') {
             try {
@@ -230,6 +263,11 @@ class User {
         }
     }
 
+    /**
+     *
+     * @returns {Promise.<{title: string, type: string, status: string, message: string}>}
+     * @constructor
+     */
     async SendReset() {
         if (regexEmail(this.data.email)) {
             try {
@@ -248,6 +286,12 @@ class User {
         }
     }
 
+    /**
+     *
+     * @param req
+     * @returns {Promise.<*>}
+     * @constructor
+     */
     async Oauth42(req) {
         let url = `https://api.intra.42.fr/oauth/token`
         if (req.query) {
