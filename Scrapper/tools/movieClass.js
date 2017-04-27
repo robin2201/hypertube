@@ -6,11 +6,8 @@ const MovieSchema = require('../models/MovieSchema')
 
 class Movie {
 
-    constructor(movie = null, idMovie = null){
-        if(movie)
+    constructor(movie){
             this.movie = movie
-        if(idMovie)
-            this.idMovie = idMovie
 
     }
 
@@ -25,6 +22,23 @@ class Movie {
         } catch (err) {
             return console.log(`error ${err} ocurred with this movie ${this.movie.id && this.movie.title}`)
         }
+    }
+
+    async ReturnAllMovies(){
+        try {
+            return await MovieSchema.find({}).limit(40)
+        } catch (e){
+            return(e)
+        }
+    }
+
+    async ReturnOneMovie(){
+        console.log(`This movie ====>   ${this.movie}`)
+        try{
+            let tam = await MovieSchema.findOne({_id: this.movie}).exec()
+            console.log(tam)
+            return tam
+        } catch (e) { return e}
     }
 }
 

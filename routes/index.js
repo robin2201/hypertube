@@ -9,7 +9,9 @@ const { index,
         resetPass,
         home } = require('../controllers/indexController')
 
-const {ScrapMovie} = require('../controllers/MovieController')
+const { ScrapMovie,
+        GalleryMovie,
+        SingleMovie} = require('../controllers/MovieController')
 
 
 
@@ -22,5 +24,7 @@ app.get('/forget', forget)
 app.get('/resetPassword/:id/:token', resetPass)
 app.get('/users/edit', home)
 app.get('/tamere', ScrapMovie)
+app.get('/gallery/movies/:page', GalleryMovie)
+app.get('/gallery/single/:idMovie', SingleMovie)
 
 module.exports = app;
