@@ -16,10 +16,8 @@ module.exports = {
 
     },
 
-    //TODO add pagination with scip and limit keyWords in mongoose find method
+    //TODO add pagination in req.params with scip and limit keyWords in mongoose find method
     GalleryMovie: (req, res, next) => {
-        console.log('tets')
-
         try {
             const AllMovie = new MovieClass()
             AllMovie.ReturnAllMovies()
@@ -41,7 +39,6 @@ module.exports = {
             const OneMovie = new MovieClass(req.params.idMovie)
             OneMovie.ReturnOneMovie()
                 .then((ifExist) => {
-                    console.log(ifExist)
                     return res.render('movie', {
                         movie: ifExist,
                         type: 'One'

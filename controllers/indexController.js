@@ -50,7 +50,7 @@ module.exports = {
     resetPass: (req, res) => {
         let {id, token} = req.params
         id = id.substr(1)
-        token = token.substr(1)
+        token = token.substr(1)         //TODO verify if need to substr ...
 
         res.render('index', {
             title:'Hypertube',
