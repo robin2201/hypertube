@@ -98,9 +98,9 @@ class YTS {
 
     async getMovies() {
         try {
-            let totalPages = await this.getTotalPages()
-            if (!totalPages) return console.log(`${this.name}: totalPages returned; '${totalPages}'`)
-            totalPages = 3
+            const totalPages = await this.getTotalPages()
+            if (!totalPages)
+                return console.log(`${this.name}: totalPages returned; '${totalPages}'`)
             let movies = []
             return await asyncq.timesSeries(totalPages, async page => {
                 try {
