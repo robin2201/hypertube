@@ -9,7 +9,7 @@ const base64 = require('base64url')
 const argon2 = require('argon2')
 
 /** Stmp protocol using nodemailer and Mailtrap.io **/
-const sendEmail = require('../tools/emailFunctions').sendEmail
+const Mailer = require('../tools/emailFunctions')
 
 /** Multer Objet create enctype/data and add .file to req **/
 const Upload = require('../tools/uploadMulter')
@@ -102,7 +102,9 @@ class User {
                     picture: '',
                 })
                 let UserSaved = await newUser.save()
-                sendEmail(`register`, UserSaved._id, token, this.data.email)
+                const mail = new Mailer('register', {id:UserSaved._id, token:token, email:this.data.email})
+                mail.SendEmail()
+                //sendEmail(`register`, UserSaved._id, token, this.data.email)
                 return {title: 'Hypertube', message: "sucess, now valid your email", type: 'entryPoint'}
             }
         } else {
@@ -271,7 +273,10 @@ class User {
                 let user = await UserSchema.findOne({mail: this.data.email})
                 if (user) {
                     try {
-                        sendEmail('resetPass', user._id, user.tokenRegisterEmail, this.data.email)
+                        console.log('before sent')
+                        const mail = new Mailer('resetPass', {id:user._id, token:user.tokenRegisterEmail, email:this.data.email})
+                        mail.SendEmail()
+                        //sendEmail('resetPass', user._id, user.tokenRegisterEmail, this.data.email)
                         return {title:`Hpertube`,type: `entryPoint`, status:`True`,message: `Instruction for reset pass are sent to ${this.data.email}`}
                     } catch (e) {
                         return {title:`Hpertube`,type: `entryPoint`,status: `False`, message: `The email ${this.data.email} doesn't match`}

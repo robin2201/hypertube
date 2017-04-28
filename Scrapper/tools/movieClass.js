@@ -37,7 +37,7 @@ class Movie {
     //TODO add req.params.page to calculate scip and limit scip = (nb elem) * page
     async ReturnAllMovies(){
         try {
-            return await MovieSchema.find({}).limit(40)
+            return await MovieSchema.find({}).limit(100)
         } catch (e){
             return(e)
         }
