@@ -164,13 +164,7 @@ class User {
                 if (user) {
                     try {
                         const passHashedWithArgon = await argon2.hash(this.data.password, await argon2.generateSalt(32), optionsArgon2)
-                        UserSchema.updateOne({
-                                _id: this.data.id
-                            },
-                            {
-                                $set: {password: passHashedWithArgon}
-                            },
-                            projectionWithNewDocument)
+                        UserSchema.updateOne({_id: this.data.id}, {$set: {password: passHashedWithArgon}}, projectionWithNewDocument)
                             .then(() => {
                                 return {
                                     title: 'Hypertube',
@@ -208,12 +202,12 @@ class User {
                         return {
                             user: user,
                             type: `ok`,
-                            message: `${ query.username || query.firstname || query.lastname || query.mail }Modification do with sucess`
+                            message: `${ query.username || query.firstname || query.lastname || query.mail } Modification do with sucess`
                         }
                     } else
-                        return {type: 'Error User', message: `Error Can't modify now your informations`}
+                        return { type: 'Error User', message: `Error Can't modify now your informations` }
                 } catch (e) {
-                    return {type: `Error Internal`, message: `An Internal Error Occured Sorry please try later`}
+                    return { type: `Error Internal`, message: `An Internal Error Occured Sorry please try later` }
                 }
             }
         }

@@ -129,9 +129,7 @@ class YTS {
                     return console.log(err)
                 }
             }).then(() => movies)
-        } catch (err) {
-            return (err)
-        }
+        } catch (err) { return (err) }
     }
 
     /**
@@ -147,9 +145,7 @@ class YTS {
                     return await MovieToAdd.AddMovieOrReturnIfExist()
                 }
             })
-        } catch (err) {
-            return (err)
-        }
+        } catch (e) { return (e) }
     }
 
 
