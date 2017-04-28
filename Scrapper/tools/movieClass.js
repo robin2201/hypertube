@@ -38,9 +38,7 @@ class Movie {
     async ReturnAllMovies(){
         try {
             return await MovieSchema.find({}).limit(100)
-        } catch (e){
-            return(e)
-        }
+        } catch (e) { return e }
     }
 
     /**
@@ -51,7 +49,7 @@ class Movie {
     async ReturnOneMovie(){
         try{
             return await MovieSchema.findOne({_id: this.movie}).exec()
-        } catch (e) { return e}
+        } catch (e) { return e }
     }
 }
 

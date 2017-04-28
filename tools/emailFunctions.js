@@ -13,7 +13,11 @@ const transporter = nodeMailer.createTransport({
 })
 
 class Mailer {
-
+    /**
+     *
+     * @param type
+     * @param data
+     */
     constructor(type, data){
 
         this.data = data
@@ -21,6 +25,10 @@ class Mailer {
 
     }
 
+    /**
+     *
+     * @returns {{from: string, to: *, subject: string, html: string}} ===> message Object
+     */
     createMessage(){
         let subject = ``
         let path = `http://localhost:3000/`
@@ -37,10 +45,15 @@ class Mailer {
             from:`Hypertube register <noreply@hypertube-app.42.fr>`,
             to: this.data.email,
             subject:subject,
-            html:`<p>Follow <a href="${path} target="_blank">this link</a> to acess your account</p>`
+            html:`<p>Follow <a href="${path}" target="_blank">this link</a> to acess your account</p>`
         }
     }
 
+    /**
+     *
+     * @returns {Promise.<void>}
+     * @constructor
+     */
     async SendEmail(){
         try {
             const message = this.createMessage()
@@ -57,66 +70,3 @@ class Mailer {
 }
 
 module.exports = Mailer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//
-//
-// module.exports = {
-//
-//     async sendEmail (type, id, token, email)  {
-//         let link = "http://localhost:3000/users/activation/:"+id+"/:"+token
-//         let message = {
-//             from : "Hypertube register <noreply@hypertube-app.42.fr>",
-//             to : email,
-//             subject : "✔ Let's go to validate your account",
-//             html : '<p>Follow <a href="' + link + '" target="_blank">this link</a> to activate your account</p>'
-//
-//         }
-//         if(type === 'resetPass'){
-//             link = "http://localhost:3000/resetPassword/:"+id+"/:"+token
-//             message = {
-//                 from : "Hypertube reset Password <noreply@hypertube-app.42.fr>",
-//                 to : email,
-//                 subject : "✔ Let's go to reset your pass",
-//                 html : '<p>Follow <a href="' + link + '" target="_blank">this link</a> to reset your password</p>'
-//
-//             }
-//         }
-//
-//         transporter.verify(err => {
-//             if(err) console.log(err)
-//             else{
-//                 transporter.sendMail(message, (err, info) => {
-//                     if(err) console.log(err)
-//                     else{
-//                         console.log('Message %s, sent with response %s!', info.messageId, info.response)
-//                         transporter.close()
-//                     }
-//                 })
-//             }
-//         })
-//     }
-//}
