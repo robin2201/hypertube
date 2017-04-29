@@ -25,3 +25,8 @@ block content
         form(method='POST', action='/movie/download')
             input(type='hidden', name='torrent', value=movie.torrents.en['1080p'].url)
             button(type='submit') 🎥
+
+
+        video(id='video' src="../../tmp/test/gold/Gold.2016.1080p.BluRay.x264-[YTS.AG].mp4" type="video/mp4" controls)
+    script
+        include ../public/js/player.js

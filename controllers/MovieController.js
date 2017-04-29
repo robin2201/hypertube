@@ -1,7 +1,7 @@
 const Scrap = require('../Scrapper/Scrapper')
 const MovieClass = require('../Scrapper/tools/movieClass')
+const Streamer = require('../Class/Streamer')
 
-const torrentStream = require('torrent-stream')
 
 module.exports = {
     /**
@@ -47,6 +47,7 @@ module.exports = {
             next(e)
         }
     },
+
     /**
      *
      * @param req
@@ -59,29 +60,28 @@ module.exports = {
             const OneMovie = new MovieClass(req.params.idMovie)
             OneMovie.ReturnOneMovie()
                 .then((ifExist) => {
-                console.log(ifExist)
                     return res.render('movie', {
                         movie: ifExist,
                         type: 'One',
                     })
                 })
 
-        } catch (e) {
-            next(e)
-        }
+        } catch (e) { next(e) }
     },
 
+    /**
+     *
+     * @param req
+     * @param res
+     * @param next
+     * @returns {*}
+     * @constructor
+      */
     DownloadAndStartStream: (req, res, next) => {
         try{
-            let test = {
-
-            }
-            console.log(req.body.torrent)
-            const t = req.body.torrent.split('&')
-            console.log(t)
-            let engine = torrentStream(t[0])
-
-        } catch (e) { return e }
+            const streamer = new Streamer(req.body.torrent)
+            const test = streamer.DownloadTorrent()
+        } catch (e) { next(e) }
 
 
     }
