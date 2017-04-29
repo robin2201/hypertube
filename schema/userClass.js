@@ -197,7 +197,7 @@ class User {
             this.data.email !== '' ? query.mail = this.data.email : undefined
             if (query && id) {
                 try {
-                    let user = await UserSchema.findOneAndUpdate({_id: id}, query, projectionWithNewDocument)
+                    const user = await UserSchema.findOneAndUpdate({_id: id}, query, projectionWithNewDocument)
                     if (user) {
                         return {
                             user: user,

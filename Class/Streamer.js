@@ -2,45 +2,52 @@ const torrentStream = require('torrent-stream')
 const fs = require('fs')
 
 
-
+//TODO Add method to update movie document { download: { time: New date, path:this.path } }
 class Streamer {
-
+    /**
+     *
+     * @param magnet
+     */
     constructor(magnet){
         this.magnet = magnet
+        this.path = `./tmp`
     }
 
     /**
      *
-     * @returns {string}
+      * @returns {Promise.<void>}
      */
-    ifDirDoesNotExist(){
-        const pathToDl = `./tmp`
+    async ifDirDoesNotExist(){
         try{
-            fs.accessSync(pathToDl)
+            fs.accessSync(this.path)
         } catch (e) {
-            fs.mkdirSync(pathToDl)
+            fs.mkdirSync(this.path)
         }
-        return pathToDl
     }
 
+    /**
+     *
+     * @returns {Promise.<*>}
+     * @constructor
+     */
     async ExtractMagnetAndTrackers(){
         try{
-            const pathToDl = this.ifDirDoesNotExist()
-            const MagnetAndTrackers = this.magnet.split(`&`)
-            const Magnet = MagnetAndTrackers.shift()
+            this.ifDirDoesNotExist()
+            const Trackers = this.magnet.split(`&`)
+            const Magnet = Trackers.shift()
             const opts = {
                 connections: 100,
                 uploads: 10,
-                tmp: pathToDl,
-                path: `${pathToDl}/test`,
+                tmp: this.path,
+                path: `${this.path}/test`,
                 verify: true,
                 dht: true,
                 tracker: true,
-                trackers: MagnetAndTrackers,
+                trackers: Trackers,
             }
-            return await {magnet:Magnet, opts:opts}
+            return await { magnet:Magnet, opts:opts }
         } catch (e) {
-            return {message:`An error occured with the magnet ${this.magnet}`}
+            return { message:`An error occured with the magnet ${this.magnet}` }
         }
     }
 
@@ -54,7 +61,7 @@ class Streamer {
                     return file.createReadStream()
                 })
             })
-        } catch (e) { return e}
+        } catch (e) { return e }
 
     }
 

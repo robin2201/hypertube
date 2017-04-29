@@ -13,14 +13,12 @@ module.exports = {
      */
     ScrapMovie: (req, res, next) => {
         try {
-            let scrap = new Scrap()
+            const scrap = new Scrap()
             scrap.scrape()
                 .then(() => {
                     return console.log('Scrapping Done')
                 })
-        } catch (e) {
-            next(e)
-        }
+        } catch (e) { next(e) }
 
     },
     /**
@@ -43,9 +41,7 @@ module.exports = {
                     })
                 })
 
-        } catch (e) {
-            next(e)
-        }
+        } catch (e) { next(e) }
     },
 
     /**

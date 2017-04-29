@@ -12,7 +12,7 @@ class YTS {
 
         this.name = name
 
-        this._request = request.defaults({
+        this.request = request.defaults({
             "headers": {
                 "Content-Type": "application/json"
             },
@@ -29,7 +29,7 @@ class YTS {
     getTotalPages(retry = true) {
         const url = "list_movies.json";
         return new Promise((resolve, reject) => {
-            this._request(url, (err, res, body) => {
+            this.request(url, (err, res, body) => {
                 if (err && retry) {
                     return resolve(this.getTotalPages(false))
                 } else if (err) {
@@ -54,7 +54,7 @@ class YTS {
     getOnePage(page, retry = true) {
         const url = `?limit=50&page=${page + 1}`
         return new Promise((resolve, reject) => {
-            this._request(url, (err, res, body) => {
+            this.request(url, (err, res, body) => {
                 if (err && retry) {
                     return resolve(this.getOnePage(page, false))
                 } else if (err) {
@@ -75,7 +75,7 @@ class YTS {
      */
     formatPage(data) {
         return asyncq.each(data, movie => {
-            if (movie && movie.torrents && movie.imdb_code && movie.language.match(/english/i)) {
+            if (movie && movie.torrents && movie.imdb_code) {
                 const torrents = {}
                 torrents["en"] = {}
                 movie.torrents.map(torrent => {
