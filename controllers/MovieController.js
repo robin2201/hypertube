@@ -73,10 +73,12 @@ module.exports = {
      * @returns {*}
      * @constructor
       */
-    DownloadAndStartStream: (req, res, next) => {
+    async DownloadAndStartStream (req, res, next)  {
+        console.log(req.body)
         try{
             const streamer = new Streamer(req.body.torrent)
-            const test = streamer.DownloadTorrent()
+            const test = await streamer.DownloadTorrent()
+            return res.send({ test })
         } catch (e) { next(e) }
 
 

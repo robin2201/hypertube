@@ -26,7 +26,25 @@ block content
             input(type='hidden', name='torrent', value=movie.torrents.en['1080p'].url)
             button(type='submit') 🎥
 
+        //.test
+        //    input.imdb(type='hidden', name='Imdb', value=movie.imdb_id)
+        //    input.mag(type='hidden', name='Mag', value=movie.torrents.en['1080p'].url)
+        //    input.lol(type='submit', name='torrent', value=[movie.imdb_id ,movie.torrents.en['1080p'].url])
+        //    button.lol(type="submit", value=[movie.imdb_id, movie.torrents.en['1080p'].url]) test
+        .large
+            h1 Load An mp4 file
+            input#the-video-file-field(type='file')
+            #data-vid.large-8.columns
+            h2#name-vid
+            p#size-vid
+            p#type-vid
 
-        video(id='video' src="../../tmp/test/gold/Gold.2016.1080p.BluRay.x264-[YTS.AG].mp4" type="video/mp4" controls)
+
+
+        .video
+            video#video(data-id=movie.imdb_id, data-magnet=movie.torrents.en['1080p'].url ,controls='', preload='auto')
+                source(src='http://localhost:3000/tmp/Silicon Cowboys (2016) [1080p] [YTS.AG]/Silicon.Cowboys.2016.1080p.BluRay.x264-[YTS.AG].mp4', type='video/mp4')
+            button.lol(type='submit')
+        //video(id='video' src="./tmp/test/gold/Gold.2016.1080p.BluRay.x264-[YTS.AG].mp4" type="video/mp4" controls)
     script
         include ../public/js/player.js

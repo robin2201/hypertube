@@ -39,7 +39,7 @@ class Streamer {
                 connections: 100,
                 uploads: 10,
                 tmp: this.path,
-                path: `${this.path}/test`,
+                path: `${this.path}`,
                 verify: true,
                 dht: true,
                 tracker: true,
@@ -55,10 +55,9 @@ class Streamer {
         try {
             const optsTorrentStream = await this.ExtractMagnetAndTrackers()
             const engine = torrentStream(optsTorrentStream.magnet, optsTorrentStream.opts)
-            engine.on('ready', () => {
-                console.log(engine.files)
-                engine.files.forEach(file => {
-                    return file.createReadStream()
+            return await engine.on('ready', () => {
+                engine.files.forEach(async file => {
+                    return await file.createReadStream()
                 })
             })
         } catch (e) { return e }

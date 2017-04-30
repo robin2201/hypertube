@@ -104,7 +104,7 @@ class YTS {
                     },
                     country:movie.language,
                     genres:movie.genres,
-                    trailer:`https://youtube.com/watch?v=${movie.yt_trailer_code}`,
+                    trailer:`https://youtube.com/embed/${movie.yt_trailer_code}`,
                     torrents
                 }
             }
