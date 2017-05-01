@@ -1,7 +1,7 @@
 const Scrap = require('../Scrapper/Scrapper')
 const MovieClass = require('../Scrapper/tools/movieClass')
 const Streamer = require('../Class/Streamer')
-
+const Subtitles = require('../Class/Subtitles')
 
 module.exports = {
     /**
@@ -82,6 +82,14 @@ module.exports = {
         } catch (e) { next(e) }
 
 
+    },
+
+    async FindSubtitles (req, res, next){
+        try{
+            const subtitles = new Subtitles(req.body.imdb)
+            subtitles.FIndSubtitles()
+                .then(() => console.log(`Subtitles correctly added`))
+        }catch (e){ next(e) }
     }
 
 }

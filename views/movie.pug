@@ -39,7 +39,10 @@ block content
             p#size-vid
             p#type-vid
 
-
+        form(method="POST", action='/movie/subtitle/get')
+            input(type='text', placeholder='fr'
+            input(type='hidden', name='imdb', value=movie.imdb_id)
+            button(type='submit') Add Subtitles
 
         .video
             video#video(data-id=movie.imdb_id, data-magnet=movie.torrents.en['1080p'].url ,controls='', preload='auto')

@@ -28,6 +28,7 @@ app.get('/users/edit', home)
 /** Movies routes in test ... **/
 app.get('/torrent/update', ScrapMovie)
 app.get('/gallery/movies/:page', GalleryMovie)
+app.get('/movie/subtitle/get', )
 app.get('/gallery/single/:idMovie', SingleMovie)
 app.post('/movie/download', DownloadAndStartStream)
 module.exports = app;
