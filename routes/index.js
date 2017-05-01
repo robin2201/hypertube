@@ -12,7 +12,8 @@ const { index,
 const { ScrapMovie,
         GalleryMovie,
         SingleMovie,
-        DownloadAndStartStream} = require('../controllers/MovieController')
+        DownloadAndStartStream,
+        FindSubtitles} = require('../controllers/MovieController')
 
 
 
@@ -28,7 +29,7 @@ app.get('/users/edit', home)
 /** Movies routes in test ... **/
 app.get('/torrent/update', ScrapMovie)
 app.get('/gallery/movies/:page', GalleryMovie)
-app.get('/movie/subtitle/get', )
+app.post('/movie/subtitle/get', FindSubtitles)
 app.get('/gallery/single/:idMovie', SingleMovie)
 app.post('/movie/download', DownloadAndStartStream)
 module.exports = app;

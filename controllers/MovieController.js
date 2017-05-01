@@ -86,9 +86,9 @@ module.exports = {
 
     async FindSubtitles (req, res, next){
         try{
-            const subtitles = new Subtitles(req.body.imdb)
+            const subtitles = new Subtitles(req.body)
             subtitles.FIndSubtitles()
-                .then(() => console.log(`Subtitles correctly added`))
+                .then((sub) => console.log(`${sub}     Subtitles correctly added`))
         }catch (e){ next(e) }
     }
 

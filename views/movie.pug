@@ -40,7 +40,7 @@ block content
             p#type-vid
 
         form(method="POST", action='/movie/subtitle/get')
-            input(type='text', placeholder='fr'
+            input(type='text', placeholder='fr', name='lang')
             input(type='hidden', name='imdb', value=movie.imdb_id)
             button(type='submit') Add Subtitles
 
