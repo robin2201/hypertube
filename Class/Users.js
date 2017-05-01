@@ -1,18 +1,16 @@
-const UserSchema = require('../schema/userSchema')
+const UserSchema = require('./ModelsMongoose/UserSchema')
 
 /** Used to generate token **/
 const crypto = require('crypto')
 const base64 = require('base64url')
-/** End tools token generation **/
+/** End Helpers token generation **/
 
 /** Hash Algorithm fror passwords **/
 const argon2 = require('argon2')
 
 /** Stmp protocol using nodemailer and Mailtrap.io **/
-const Mailer = require('../tools/emailFunctions')
+const Mailer = require('../Helpers/Email')
 
-/** Multer Objet create enctype/data and add .file to req **/
-const Upload = require('../tools/uploadMulter')
 
 /** HTTP simple request **/
 const axios = require('axios')
@@ -24,7 +22,7 @@ const {
     regexUsername,
     regexPassword,
     regexEmail
-} = require('../tools/verifInput')
+} = require('../Helpers/verifInput')
 /** End Regex **/
 
 const optionsArgon2 = {
@@ -32,7 +30,7 @@ const optionsArgon2 = {
 }
 
 /** Opt for Argon2 for optimisation use more memory, work on 2 threads **/
-const {projectionWithNewDocument, AxiosOAuth42} = require('../config/constants')
+const {projectionWithNewDocument, AxiosOAuth42} = require('../Config/constants')
 
 
 class User {

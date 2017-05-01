@@ -1,4 +1,4 @@
-const MovieSchema = require('../models/MovieSchema')
+const MovieSchema = require('./ModelsMongoose/MovieSchema')
 
 
 class Movie {

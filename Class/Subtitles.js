@@ -1,10 +1,6 @@
-/**
- * Created by rberthie on 5/1/17.
- */
-
 const OpenSubtitles = require('opensubtitles-api')
 const OS = new OpenSubtitles('kw221292')
-const movieSchema = require('../Scrapper/models/MovieSchema')
+const movieSchema = require('./ModelsMongoose/MovieSchema')
 const request = require('request')
 const zLib = require('zlib')
 

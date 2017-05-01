@@ -1,5 +1,5 @@
-const Scrap = require('../Scrapper/Scrapper')
-const MovieClass = require('../Scrapper/tools/movieClass')
+const Scrap = require('../Class/Scrapper/Scrapper')
+const MovieClass = require('../Class/Movies')
 const Streamer = require('../Class/Streamer')
 const Subtitles = require('../Class/Subtitles')
 

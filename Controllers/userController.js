@@ -5,7 +5,7 @@
  *
  **/
 
-const UserClass = require('../schema/userClass')
+const UserClass = require('../Class/Users')
 
 module.exports = {
 

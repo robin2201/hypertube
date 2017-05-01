@@ -5,8 +5,9 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const session = require('express-session')
-const index = require('./routes/index')
-const users = require('./routes/users')
+const index = require('./Routes/index')
+const users = require('./Routes/users')
+const movies = require(('./Routes/movies'))
 const compression = require('compression')
 
 
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', index)
 app.use('/users', users)
+app.use('/movies', movies)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   let err = new Error('Not Found')

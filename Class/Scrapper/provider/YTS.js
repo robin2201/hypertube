@@ -1,7 +1,7 @@
 const request = require('request')
 const asyncq = require('async-q')
-const {maxWebRequest, webRequestTimeout} = require('../../config/constants')
-const MovieClass = require('../tools/movieClass')
+const {maxWebRequest, webRequestTimeout} = require('../../../Config/constants')
+const MovieClass = require('../../Movies')
 
 class YTS {
     /**

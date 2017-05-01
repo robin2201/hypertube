@@ -6,7 +6,7 @@ const { login,
         activationAccount,
         sendResetInstruction,
         newPassword,
-        registerWith42 } = require('../controllers/userController')
+        registerWith42 } = require('../Controllers/userController')
 //const { home } = require('../controllers/indexController')
 
 

@@ -2,7 +2,7 @@
  * Created by rberthie on 5/1/17.
  */
 const request = request('request')
-const {maxWebRequest, webRequestTimeout} = require('../config/constants')
+const {maxWebRequest, webRequestTimeout} = require('../Config/constants')
 
 
 class Request {
