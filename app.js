@@ -78,8 +78,8 @@ passport.deserializeUser(function (id, done) {
 })
 
 passport.use(new GoogleStrategy({
-        clientID: "409337954243-qlp9l41la5a1m7eqd31n8kqn8ntqcjlm.apps.googleusercontent.com",
-        clientSecret: "UisRf-YJvtiGYMcPaj-cHy8A",
+        clientID: "",
+        clientSecret: "",
         callbackURL: "http://localhost:3000/users/auth/google/cb",
     },
     function (token, tokenSecret, profile, done) {
@@ -97,8 +97,8 @@ passport.use(new GoogleStrategy({
 ))
 
 passport.use(new TwitterStrategy({
-        consumerKey: "3cADftkbNolMa2jGdieeThScC",
-        consumerSecret: "s7jS8cCi1adJxq4pMSN36SULHYGeySkYQiNZcrkHCpfBtQd47t",
+        consumerKey: "",
+        consumerSecret: "",
         callbackURL: "http://localhost:3000/users/auth/twitter/cb"
     },
     function (token, tokenSecret, profile, done) {
@@ -116,8 +116,8 @@ passport.use(new TwitterStrategy({
 ))
 
 passport.use(new FacebookStrategy({
-        clientID: "403301276718511",
-        clientSecret: "8048a8c4235b0d818c3f729fb56594e8",
+        clientID: "",
+        clientSecret: "",
         callbackURL: "http://localhost:3000/users/auth/facebook/cb",
         profileFields: ['id', 'displayName', 'photos', 'email']
     },
