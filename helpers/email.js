@@ -8,8 +8,8 @@ const transporter = nodeMailer.createTransport({
     // port: 2525,
     service:"Gmail",
     auth: {
-        user: 'ftmailto@gmail.com',
-        pass: 'XavierNiel'
+        user: '',
+        pass: ''
     }
 })
 
