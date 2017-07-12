@@ -47,8 +47,8 @@ const allUsersProjection = {
 /** Api Key for 42 **/
 const AxiosOAuth42 = {
     grant_type: 'authorization_code',
-    client_id: 'bfa18ca1d008f4f16d51aa04f4dd4bf84924230c45c0f3987c94094c0f1eaaf1',
-    client_secret: '121cdf8ae98045e53e40e41f5f6688ed4808ac262e3ec52e04f693d7a293ebda',
+    client_id: '',
+    client_secret: '',
     code: ``,
     redirect_uri: 'http://localhost:3000/users/oauth/42'
 }
